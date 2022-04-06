@@ -1,0 +1,5 @@
+FROM opensuse/leap
+RUN zypper update -y
+RUN zypper install -y sqlite3
+COPY .sqliterc /root/
+WORKDIR /home
