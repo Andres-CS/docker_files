@@ -1,10 +1,13 @@
 FROM ubuntu:latest
 LABEL Version="1.0.0"
-LABEL Description="Unofficial Docker image for NJIT Big Data 2022 Fall Grad class with Scala 3 "
+LABEL Description="Unofficial Docker Scala3 Image for Big Data class"
 ENV HOME_DIR="/home/scala3"
-RUN useradd -rm -d /home/scala3 -s /bin/bash/ -g root -G sudo -u 1001 BGstudent
-#USER BGstudent
 WORKDIR /home/scala3
+#Updating System Image and installing curl.
 RUN apt-get update && apt-get upgrade -y && apt-get install curl -y
 RUN DEBIAN_FRONTEND=noninteractive TZ=Etc/UTC apt-get install tzdata -y && apt-get install default-jre -y
+#Installing Scala3 - Script taken from Scala official website.
 RUN curl -fL https://github.com/coursier/launchers/raw/master/cs-x86_64-pc-linux.gz | gzip -d > cs && chmod +x cs && ./cs setup -y
+#Making Scala command global to System.
+RUN mkdir /usr/bin/NJITScala && cp /root/.local/share/coursier/bin/* /usr/bin/NJITScala
+ENV PATH "$PATH:/usr/bin/NJITScala"
