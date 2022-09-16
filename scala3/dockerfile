@@ -8,6 +8,6 @@ RUN apt-get update && apt-get upgrade -y && apt-get install curl -y
 RUN DEBIAN_FRONTEND=noninteractive TZ=Etc/UTC apt-get install tzdata -y && apt-get install default-jre -y
 #Installing Scala3 - Script taken from Scala official website.
 RUN curl -fL https://github.com/coursier/launchers/raw/master/cs-x86_64-pc-linux.gz | gzip -d > cs && chmod +x cs && ./cs setup -y
-#Making Scala command to global to System.
+#Making Scala command global to System.
 RUN mkdir /usr/bin/NJITScala && cp /root/.local/share/coursier/bin/* /usr/bin/NJITScala
 ENV PATH "$PATH:/usr/bin/NJITScala"
