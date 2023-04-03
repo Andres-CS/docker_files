@@ -1,0 +1,8 @@
+FROM alpine:latest
+LABEL Version="1.0.0"
+LABEL Description="Dev Env for Typescript projects."
+ENV DEV="/home/app"
+ENV ENV="/root/.ashinit"
+WORKDIR /home/app
+RUN echo -e "\n#Aliases for all Profiles \nalias ll='ls -la'\nalias dev='cd /home/app'" >> ~/.ashinit
+RUN apk add --update nodejs npm jq nano tree
