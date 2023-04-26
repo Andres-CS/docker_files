@@ -2,8 +2,8 @@ FROM alpine:latest
 LABEL Version="1.0.0"
 LABEL Description="Dev Env for Typescript projects."
 ENV DEV="/home/app"
-ENV ENV="/root/.ashinit"
-ENV PS1='\\e[1;36m[TS Con]\\e[0;32m[\\u:\\w]\\$\\e[m '
 WORKDIR /home/app
-ENV ENV="/home/jairo/.ashinit"
+ENV ENV="/root/.ashinit"
 RUN echo -e "\n#Aliases for all Profiles \nalias ll='ls -la'\nalias dev='cd /home/app'" >> ~/.ashinit
+ENV PS1='\\e[1;36m[TS Con]\\e[0;32m[\\u:\\w]\\$\\e[m '
+RUN apk add --update nodejs npm jq nano tree
