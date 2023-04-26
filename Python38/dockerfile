@@ -1,0 +1,3 @@
+FROM fedora:latest
+RUN dnf update -y
+RUN yum install python3.8 make python3-devel libjpeg-turbo-devel zlib-devel poetry which -y
