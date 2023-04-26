@@ -17,8 +17,10 @@ RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
     && php -r "unlink('composer-setup.php');" \
     && mv composer.phar /usr/local/bin/composer
 
-RUN dnf clearn all && \
-    curl -1sLf 'https://dl.cloudsmith.io/public/symfony/stable/setup.rpm.sh' | sudo -E bash \
-    && dnf -y install symfony-cli
-
+RUN curl -sS https://get.symfony.com/cli/installer | bash \
+    && cp -R ~/.symfony5 /usr/bin/ \
+    && mv /usr/bin/.symfony5 /usr/bin/symfony54 \
+    && ln -s /usr/bin/symfony54/bin/symfony /usr/bin/symfony \
+    && rm -Rf ~/.symfony5/bin/symfony
+    
 COPY setup_symfony_proj.sh /usr/local/bin/
