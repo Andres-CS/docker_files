@@ -1,6 +1,6 @@
 FROM fedora:37
 
-ENV PS1='\\e[1;36m[Sfy54 Con]\\e[0;32m[\\u:\\w]\\$\\e[m '
+ENV PS1='\e[1;36m[Sfy54 Con]\e[0;32m[\u:\w]\$\e[m '
 
 WORKDIR /home/app
 
