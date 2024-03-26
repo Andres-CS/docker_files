@@ -1,4 +1,4 @@
-FROM fedora:37
+FROM fedora:38
 
 ENV PS1='\e[1;36m[Sfy54 Con]\e[0;32m[\u:\w]\$\e[m '
 
@@ -6,18 +6,16 @@ WORKDIR /home/app
 
 RUN dnf update -y
 
-RUN dnf -y install http://rpms.remirepo.net/fedora/remi-release-37.rpm \
-    && dnf -y install dnf-plugins-core \
-    && dnf config-manager --set-enabled remi \
-    && dnf module reset php -y \
-    && dnf module -y install php:remi-8.0 \
-    && dnf -y install php-cli php-fpm php-mysqlnd php-zip php-devel php-gd php-mcrypt php-mbstring php-curl php-xml php-pear php-bcmath php-json git unzip
+RUN dnf -y install http://rpms.remirepo.net/fedora/remi-release-38.rpm
+RUN dnf -y install dnf-plugins-core
+RUN dnf config-manager --set-enabled remi
+RUN dnf module reset php -y
+RUN dnf module -y install php:remi-8.0
+RUN dnf -y install php-cli php-fpm php-mysqlnd php-zip php-devel php-gd php-mcrypt php-mbstring php-curl php-xml php-pear php-bcmath php-json git unzip wget
 
-RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
-    && php -r "if (hash_file('sha384', 'composer-setup.php') === '55ce33d7678c5a611085589f1f3ddf8b3c52d662cd01d4ba75c0ee0459970c2200a51f492d557530c71c15d8dba01eae') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;" \
-    && php composer-setup.php \
-    && php -r "unlink('composer-setup.php');" \
-    && mv composer.phar /usr/local/bin/composer
+RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+RUN php composer-setup.php --install-dir=/usr/local/bin --filename=composer
+RUN composer self-update
 
 RUN curl -sS https://get.symfony.com/cli/installer | bash \
     && cp -R ~/.symfony5 /usr/bin/ \
