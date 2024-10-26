@@ -4,23 +4,28 @@ ENV PS1='\e[1;36m[Sfy54 Con]\e[0;32m[\u:\w]\$\e[m '
 
 WORKDIR /home/app
 
+# Update Fedora image
 RUN dnf update -y
 
-RUN dnf -y install http://rpms.remirepo.net/fedora/remi-release-38.rpm
-RUN dnf -y install dnf-plugins-core
-RUN dnf config-manager --set-enabled remi
-RUN dnf module reset php -y
-RUN dnf module -y install php:remi-8.0
-RUN dnf -y install php-cli php-fpm php-mysqlnd php-zip php-devel php-gd php-mcrypt php-mbstring php-curl php-xml php-pear php-bcmath php-json git unzip wget
+# Install Remi repo (php repo) and install PHP 8.0
+RUN dnf -y install http://rpms.remirepo.net/fedora/remi-release-38.rpm \
+    && dnf -y install dnf-plugins-core \
+    && dnf config-manager --set-enabled remi \
+    && dnf module reset php -y \
+    && dnf module -y install php:remi-8.0 \
+    && dnf -y install php-cli php-fpm php-mysqlnd php-zip php-devel php-gd php-mcrypt php-mbstring php-curl php-xml php-pear php-bcmath php-json git unzip wget \
 
-RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
-RUN php composer-setup.php --install-dir=/usr/local/bin --filename=composer
-RUN composer self-update
+# Install Composer tool
+RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
+    && php composer-setup.php --install-dir=/usr/local/bin --filename=composer \
+    && composer self-update 
 
+# Install Symfony 5.4
 RUN curl -sS https://get.symfony.com/cli/installer | bash \
     && cp -R ~/.symfony5 /usr/bin/ \
     && mv /usr/bin/.symfony5 /usr/bin/symfony54 \
     && ln -s /usr/bin/symfony54/bin/symfony /usr/bin/symfony \
     && rm -Rf ~/.symfony5/bin/symfony
-    
+
+# Copy script to set up a Symfony project
 COPY setup_symfony_proj.sh /usr/local/bin/
